@@ -1,7 +1,0 @@
-services:
-  frontend:
-    build: .
-    ports:
-      - "3000:3000" # Mapea el puerto 3000 de tu máquina al puerto 3000 del contenedor
-    volumes:
-      - ./src:/app
