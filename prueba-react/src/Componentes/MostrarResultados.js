@@ -2,17 +2,17 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const MostrarResultados = () => {
-  const [results, setResults] = useState([]);
+  const [resultados, setResults] = useState([]);
 
   useEffect(() => {
     // Obtener los datos de los resultados desde el servicio web
     axios.get('http://localhost/api/resultados.php')
-      .then(response => {
-        console.log('Respuesta del servidor:', response.data);
-        if (Array.isArray(response.data)) {
-          setResults(response.data);
+      .then(respuesta => {
+        console.log('Respuesta del servidor:', respuesta.data);
+        if (Array.isArray(respuesta.data)) {
+          setResults(respuesta.data);
         } else {
-          console.error('La respuesta no es un array:', response.data);
+          console.error('La respuesta no es un array:', respuesta.data);
         }
       })
       .catch(error => {
@@ -35,14 +35,14 @@ const MostrarResultados = () => {
           </tr>
         </thead>
         <tbody>
-          {results.map((result, index) => (
-            <tr key={`${result.id_estudiante}-${result.id_curso}-${index}`}>
-              <td>{result.nombres} {result.apellidos}</td>
-              <td>{result.nombre_curso}</td>
-              <td>{result.asistio == 1 ? 'Sí' : 'No'}</td>
-              <td>{result.nota}</td>
-              <td>{result.aprobado == 1 ? 'Sí' : 'No'}</td>
-              <td>{result.observaciones}</td>
+          {resultados.map((resultado, index) => (
+            <tr key={`${resultado.id_estudiante}-${resultado.id_curso}-${index}`}>
+              <td>{resultadot.nombres} {result.apellidos}</td>
+              <td>{resultado.nombre_curso}</td>
+              <td>{resultado.asistio == 1 ? 'Sí' : 'No'}</td>
+              <td>{resultado.nota}</td>
+              <td>{resultado.aprobado == 1 ? 'Sí' : 'No'}</td>
+              <td>{resultado.observaciones}</td>
             </tr>
           ))}
         </tbody>

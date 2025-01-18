@@ -2,19 +2,19 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Finalizarcurso = () => {
-  const [students, setStudents] = useState([]);
-  const [formData, setFormData] = useState({});
- 
 
+  const [estudiantes, setStudents] = useState([]);
+  const [datos, setFormData] = useState({});
+ 
   useEffect(() => {
-    // Obtener los datos de los estudiantes desde el servicio web
+
     axios.get('http://localhost/api/estudiantes.php')
-      .then(response => {
-        console.log('Respuesta del servidor:', response.data);
-        if (Array.isArray(response.data)) {
-          setStudents(response.data);
+      .then(respuesta => {
+        console.log('Respuesta del servidor:', respuesta.data);
+        if (Array.isArray(respuesta.data)) {
+          setStudents(respuesta.data);
         } else {
-          console.error('La respuesta no es un array:', response.data);
+          console.error('La respuesta no es un array:', respuesta.data);
         }
       })
       .catch(error => {
@@ -22,21 +22,21 @@ const Finalizarcurso = () => {
       });
   }, []);
 
-  const handleChange = (e, studentId) => {
+  const handleChange = (e, estudianteId) => {
+
     const { name, value, type, checked } = e.target;
     const fieldValue = type === 'checkbox' ? checked : value;
-
-    const student = students.find(s => s.id_estudiante === studentId);
+    const estudiante = estudiantes.find(s => s.id_estudiante === estudianteId);
 
     if (name === 'nota' && (parseFloat(value) > 5 || parseFloat(value) < 0)) {
-      alert(`La nota para ${student.nombres} ${student.apellidos} debe estar entre 0 y 5.`);
-      return; // Evita que el valor se registre si es inválido
+      alert(`La nota para ${estudiante.nombres} ${estudiante.apellidos} debe estar entre 0 y 5.`);
+      return; 
     }
 
     setFormData(prevState => ({
       ...prevState,
-      [studentId]: {
-        ...prevState[studentId],
+      [estudianteId]: {
+        ...prevState[estudianteId],
         [name]: fieldValue
       }
     }));
@@ -45,25 +45,27 @@ const Finalizarcurso = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    for (const studentId in formData) {
-      const studentData = formData[studentId];
+    for (const estudianteId in datos) {
+      const datoEstudiante = datos[estudianteId];
       if (
-        studentData.nota == undefined ||
-        studentData.nota == '' ||
-        studentData.observaciones == undefined ||
-        studentData.observaciones == ''
+        datoEstudiante.nota == undefined ||
+        datoEstudiante.nota == '' ||
+        datoEstudiante.observaciones == undefined ||
+        datoEstudiante.observaciones == ''
       ) {
-        const student = students.find(st => st.id_estudiante === parseInt(studentId));
-        const studentName = student ? `${student.nombres} ${student.apellidos}` : 'Estudiante';
+        const estudiante = estudiantes.find(st => st.id_estudiante === parseInt(estudianteId));
+        const studentName = estudiante ? `${estudiante.nombres} ${estudiante.apellidos}` : 'Estudiante';
         alert(`Por favor diligencie todos los campos `);
-        return; // Detener el envío si faltan campos
+        return;
       }
     }
 
-    const cleanedData = {}; // Preparamos el objeto de datos que se va a enviar
-    Object.keys(formData).forEach(studentId => {
-      const studentData = formData[studentId];
-      cleanedData[studentId] = {
+    //objeto donde se va a enviar
+
+    const cleanedData = {}; 
+    Object.keys(datos).forEach(estudianteId => {
+      const studentData = datos[estudianteId];
+      cleanedData[estudianteId] = {
         asistio: studentData.asistio || false,
         nota: studentData.nota || 0,
         aprobado: studentData.aprobado || false,
@@ -78,8 +80,8 @@ const Finalizarcurso = () => {
         'Content-Type': 'application/json'
       }
     })
-    .then(response => {
-      console.log('Respuesta del servidor:', response.data);
+    .then(respuesta => {
+      console.log('Respuesta del servidor:', respuesta.data);
       alert('Resultados guardados exitosamente');
     })
     .catch(error => {
@@ -103,16 +105,16 @@ const Finalizarcurso = () => {
             </tr>
           </thead>
           <tbody>
-            {students.map(student => (
-              <tr key={student.id_estudiante}>
-                <td>{student.id_estudiante}</td>
-                <td>{student.nombres} {student.apellidos}</td>
+            {students.map(estudiante => (
+              <tr key={estudiante.id_estudiante}>
+                <td>{estudiante.id_estudiante}</td>
+                <td>{estudiante.nombres} {estudiante.apellidos}</td>
                 <td>
                   <input
                     type="checkbox"
                     name="asistio"
                     className="form-check-input"
-                    onChange={(e) => handleChange(e, student.id_estudiante)}
+                    onChange={(e) => handleChange(e, estudiante.id_estudiante)}
                   />
                 </td>
                 <td>
@@ -122,7 +124,7 @@ const Finalizarcurso = () => {
                     min="0"
                     max="5"
                     className="form-control"
-                    onChange={(e) => handleChange(e, student.id_estudiante)}
+                    onChange={(e) => handleChange(e, estudiante.id_estudiante)}
                   />
                 </td>
                 <td>
@@ -130,7 +132,7 @@ const Finalizarcurso = () => {
                     type="checkbox"
                     name="aprobado"
                     className="form-check-input"
-                    onChange={(e) => handleChange(e, student.id_estudiante)}
+                    onChange={(e) => handleChange(e, estudiante.id_estudiante)}
                   />
                 </td>
                 <td>
@@ -138,7 +140,7 @@ const Finalizarcurso = () => {
                     type="text"
                     name="observaciones"
                     className="form-control"
-                    onChange={(e) => handleChange(e, student.id_estudiante)}
+                    onChange={(e) => handleChange(e, estudiante.id_estudiante)}
                   />
                 </td>
               </tr>
