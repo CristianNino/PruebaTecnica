@@ -83,10 +83,10 @@ INSERT INTO Cursos (nombre, descripcion, fecha_finalizacion,archivos) VALUES ('C
 INSERT INTO Cursos (nombre, descripcion, fecha_finalizacion,archivos) VALUES ('Curso de C', 'Introducción a C', '2024-12-24','libro de programacion I');
 INSERT INTO Cursos (nombre, descripcion, fecha_finalizacion,archivos) VALUES ('Curso de kotlin', 'Introducción a desarrollo movil', '2028-1-17','libro desarrollo movil');
 
-INSERT INTO Profesores (nombres, apellidos, numero_idenficacion) VALUES ('Ana','Maria','24681012');
-INSERT INTO Profesores (nombres, apellidos, numero_idenficacion) VALUES ('Cristian','Perez','1234567');
-INSERT INTO Profesores (nombres, apellidos, numero_idenficacion) VALUES ('Camilo','Diaz','1357911');
-INSERT INTO Profesores (nombres, apellidos, numero_idenficacion) VALUES ('Juliana','Suarez','9874563');
+INSERT INTO Profesores (nombres, apellidos, numero_identificacion) VALUES ('Ana','Maria','24681012');
+INSERT INTO Profesores (nombres, apellidos, numero_identificacion) VALUES ('Cristian','Perez','1234567');
+INSERT INTO Profesores (nombres, apellidos, numero_identificacion) VALUES ('Camilo','Diaz','1357911');
+INSERT INTO Profesores (nombres, apellidos, numero_identificacion) VALUES ('Juliana','Suarez','9874563');
 
 INSERT INTO Horarios_Curso (id_curso, dia, hora, id_profesor) VALUES (1, 'Lunes', '10:00', 1);
 INSERT INTO Horarios_Curso (id_curso, dia, hora, id_profesor) VALUES (1, 'Jueves', '9:00', 2);
