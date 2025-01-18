@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Form } from 'react-bootstrap';
 
 const Finalizarcurso = () => {
   const [students, setStudents] = useState([]);
   const [formData, setFormData] = useState({});
+ 
 
   useEffect(() => {
     // Obtener los datos de los estudiantes desde el servicio web
@@ -26,6 +26,13 @@ const Finalizarcurso = () => {
     const { name, value, type, checked } = e.target;
     const fieldValue = type === 'checkbox' ? checked : value;
 
+    const student = students.find(s => s.id_estudiante === studentId);
+
+    if (name === 'nota' && (parseFloat(value) > 5 || parseFloat(value) < 0)) {
+      alert(`La nota para ${student.nombres} ${student.apellidos} debe estar entre 0 y 5.`);
+      return; // Evita que el valor se registre si es inválido
+    }
+
     setFormData(prevState => ({
       ...prevState,
       [studentId]: {
@@ -37,6 +44,21 @@ const Finalizarcurso = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    for (const studentId in formData) {
+      const studentData = formData[studentId];
+      if (
+        studentData.nota == undefined ||
+        studentData.nota == '' ||
+        studentData.observaciones == undefined ||
+        studentData.observaciones == ''
+      ) {
+        const student = students.find(st => st.id_estudiante === parseInt(studentId));
+        const studentName = student ? `${student.nombres} ${student.apellidos}` : 'Estudiante';
+        alert(`Por favor diligencie todos los campos `);
+        return; // Detener el envío si faltan campos
+      }
+    }
 
     const cleanedData = {}; // Preparamos el objeto de datos que se va a enviar
     Object.keys(formData).forEach(studentId => {
@@ -98,7 +120,7 @@ const Finalizarcurso = () => {
                     type="number"
                     name="nota"
                     min="0"
-                    max="100"
+                    max="5"
                     className="form-control"
                     onChange={(e) => handleChange(e, student.id_estudiante)}
                   />
